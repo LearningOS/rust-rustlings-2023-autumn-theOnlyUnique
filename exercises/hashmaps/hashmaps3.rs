@@ -14,12 +14,12 @@
 // Execute `rustlings hint hashmaps3` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
 
 use std::collections::HashMap;
 
 // A structure to store the goal details of a team.
 struct Team {
+    // 进球数 失球数
     goals_scored: u8,
     goals_conceded: u8,
 }
@@ -29,6 +29,7 @@ fn build_scores_table(results: String) -> HashMap<String, Team> {
     let mut scores: HashMap<String, Team> = HashMap::new();
 
     for r in results.lines() {
+        println!("打印r{}",r);  //rEngland,France,4,2
         let v: Vec<&str> = r.split(',').collect();
         let team_1_name = v[0].to_string();
         let team_1_score: u8 = v[2].parse().unwrap();
@@ -39,6 +40,32 @@ fn build_scores_table(results: String) -> HashMap<String, Team> {
         // will be the number of goals conceded from team_2, and similarly
         // goals scored by team_2 will be the number of goals conceded by
         // team_1.
+        // 目标是将球队的得分和失分统计起来
+        // 没有找到球队1的信息 就添加球队1
+        if !scores.contains_key(&team_1_name) {
+            scores.insert(team_1_name.clone(),Team {
+                goals_scored: 0,
+                goals_conceded: 0,
+            });
+        }
+        // 没有找到球队2的信息 就添加球队2
+        if !scores.contains_key(&team_2_name) {
+            scores.insert(team_2_name.clone(),Team {
+                goals_scored: 0,
+                goals_conceded: 0,
+            });
+        }
+
+         // 更新团队1的得分情况
+         let team_1_entry = scores.get_mut(&team_1_name).unwrap();
+         team_1_entry.goals_scored += team_1_score;
+         team_1_entry.goals_conceded += team_2_score;
+ 
+         // 更新团队2的得分情况
+         let team_2_entry = scores.get_mut(&team_2_name).unwrap();
+         team_2_entry.goals_scored += team_2_score;
+         team_2_entry.goals_conceded += team_1_score;
+
     }
     scores
 }
