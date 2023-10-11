@@ -3,7 +3,7 @@
 // Execute `rustlings hint errors4` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
+
 
 #[derive(PartialEq, Debug)]
 struct PositiveNonzeroInteger(u64);
@@ -17,12 +17,23 @@ enum CreationError {
 impl PositiveNonzeroInteger {
     fn new(value: i64) -> Result<PositiveNonzeroInteger, CreationError> {
         // Hmm...? Why is this only returning an Ok value?
-        Ok(PositiveNonzeroInteger(value as u64))
+        if value>=0 {
+            if value>0 {
+                Ok(PositiveNonzeroInteger(value as u64))
+            }
+            else {
+                Err(CreationError::Zero)
+            }
+
+        }else{
+            Err(CreationError::Negative)
+        }
     }
 }
 
 #[test]
 fn test_creation() {
+    // Rust的断言宏，用于在单元测试中检查条件是否为真
     assert!(PositiveNonzeroInteger::new(10).is_ok());
     assert_eq!(
         Err(CreationError::Negative),
