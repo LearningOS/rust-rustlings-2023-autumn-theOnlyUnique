@@ -11,7 +11,7 @@
 // Execute `rustlings hint iterators5` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
+
 
 use std::collections::HashMap;
 
@@ -22,6 +22,7 @@ enum Progress {
     Complete,
 }
 
+// 统计hashMap里面有多少个value
 fn count_for(map: &HashMap<String, Progress>, value: Progress) -> usize {
     let mut count = 0;
     for val in map.values() {
@@ -35,9 +36,10 @@ fn count_for(map: &HashMap<String, Progress>, value: Progress) -> usize {
 fn count_iterator(map: &HashMap<String, Progress>, value: Progress) -> usize {
     // map is a hashmap with String keys and Progress values.
     // map = { "variables1": Complete, "from_str": None, ... }
-    todo!();
+    // todo!("123");
+    map.values().filter(|&&v| v==value).count()
 }
-
+// 统计hashMap列表里面有多少个value
 fn count_collection_for(collection: &[HashMap<String, Progress>], value: Progress) -> usize {
     let mut count = 0;
     for map in collection {
@@ -54,9 +56,18 @@ fn count_collection_iterator(collection: &[HashMap<String, Progress>], value: Pr
     // collection is a slice of hashmaps.
     // collection = [{ "variables1": Complete, "from_str": None, ... },
     //     { "variables2": Complete, ... }, ... ]
-    todo!();
+    // todo!();
+    collection
+        .iter()
+        .flat_map(|map| map.values()) //将所有HashMap元素收集到一起
+        .filter(|&&v| v==value) //对收集好的HashMap进行筛选
+        .count()  //统计满足要求的数量
+            
 }
 
+// summary
+// 1.todo!()应当被注释掉
+// 2.
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -150,7 +161,7 @@ mod tests {
         other.insert(String::from("if1"), Complete);
         other.insert(String::from("from_into"), None);
         other.insert(String::from("try_from_into"), None);
-
+        // 一个hashMap 一个Vec HashMap
         vec![map, other]
     }
 }
