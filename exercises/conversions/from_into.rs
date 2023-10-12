@@ -40,10 +40,36 @@ impl Default for Person {
 // If while parsing the age, something goes wrong, then return the default of
 // Person Otherwise, then return an instantiated Person object with the results
 
-// I AM NOT DONE
+
 
 impl From<&str> for Person {
     fn from(s: &str) -> Person {
+        let dataList:Vec<&str> =s.split(',').collect();
+        println!("{:?}",dataList);
+        // 数据量不对
+        if dataList.len() != 2 || dataList[0]=="" || dataList[1]=="" {
+            Person {
+                name: String::from("John"),
+                age: 30,
+            }
+        }
+        else {
+           if  dataList[1].chars().all(|x| x.is_digit(10)) {
+                let uAge:usize = dataList[1].parse().unwrap();
+                Person {
+                    name: dataList[0].to_string(),
+                    age: uAge,
+                }
+           }
+            //    数据格式不对
+           else {
+                Person {
+                    name: String::from("John"),
+                    age: 30,
+                }
+           }
+        }
+
     }
 }
 

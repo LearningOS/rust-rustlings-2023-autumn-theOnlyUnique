@@ -12,7 +12,6 @@
 //
 // Execute `rustlings hint cow1` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
 
 use std::borrow::Cow;
 
@@ -27,6 +26,8 @@ fn abs_all<'a, 'b>(input: &'a mut Cow<'b, [i32]>) -> &'a mut Cow<'b, [i32]> {
     input
 }
 
+// tips
+// 通过检查 Cow 的变体，你可以验证测试中的操作是否产生了数据的拷贝或拥有权转移。
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -49,6 +50,8 @@ mod tests {
         let mut input = Cow::from(&slice[..]);
         match abs_all(&mut input) {
             // TODO
+            Cow::Borrowed(_) => Ok(()),
+            _ => Err("Expected borrowed value"),
         }
     }
 
@@ -61,6 +64,8 @@ mod tests {
         let mut input = Cow::from(slice);
         match abs_all(&mut input) {
             // TODO
+            Cow::Owned(_) => Ok(()),
+            _ => Err("Expected owned value"),
         }
     }
 
@@ -69,10 +74,15 @@ mod tests {
         // Of course this is also the case if a mutation does occur. In this
         // case the call to `to_mut()` returns a reference to the same data as
         // before.
+        // 在发生变异（mutation）的情况下，可以使用 to_mut() 方法来获取对相同数据的引用。
+        // to_mut() 方法返回一个可变引用，允许对 Cow 中的数据进行修改。
+        // 因此，在 "owned_mutation" 测试中，可以使用 to_mut() 来获取引用并对数据进行修改，而无需创建数据的新拷贝。
         let slice = vec![-1, 0, 1];
         let mut input = Cow::from(slice);
         match abs_all(&mut input) {
             // TODO
+            Cow::Owned(_) => Ok(()),
+            _ => Err("Expected owned value"),
         }
     }
 }

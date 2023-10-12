@@ -8,11 +8,14 @@
 // Execute `rustlings hint threads1` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
+
 
 use std::thread;
 use std::time::{Duration, Instant};
 
+// tips:
+// handle.join() 执行时，它会等待线程完成，然后返回线程的返回值，但同时也会打印线程的输出。
+// 这是因为 println! 宏会自动将其输出打印到标准输出。所以，当线程完成时，它会打印消息。
 fn main() {
     let mut handles = vec![];
     for i in 0..10 {
@@ -24,9 +27,11 @@ fn main() {
         }));
     }
 
+        // 要讲返回的结果存放在这里
     let mut results: Vec<u128> = vec![];
     for handle in handles {
         // TODO: a struct is returned from thread::spawn, can you use it?
+        results.push(handle.join().unwrap());
     }
 
     if results.len() != 10 {
